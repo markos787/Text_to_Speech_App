@@ -4,6 +4,37 @@ from tkinter.ttk import Combobox
 import pyttsx3
 import os
 
+
+engine=pyttsx3.init() # pyttsx3 converts text to speech - main factor of the application
+
+def speaking():
+    text_var=text_input.get(1.0, END) # 1.0 means from the beginning, to the END
+    gender_var=gender.get()
+    speed_var=speed.get()
+    voices=engine.getProperty('Voices')
+
+    def set_voice():
+        if gender_var=='Male':
+            engine.setProperty('voice', voices[0].id) # 0 - Male
+            engine.say(text=text_var)
+            engine.runAndWait()
+        else:
+            engine.setProperty('voice', voices[1].id) # 1 - Female
+            engine.say(text=text_var)
+            engine.runAndWait()
+    
+    if text_var:
+        if speed_var=='Fast':
+            engine.setProperty('rate', 250)
+            set_voice()
+        elif speed_var=='Normal':
+            engine.setProperty('rate', 150)
+            set_voice()
+        else:
+            engine.setProperty('rate', 60)
+            set_voice()
+
+
 root=Tk()
 root.title('Text to Speech')
 root.geometry('900x450+500+300')
