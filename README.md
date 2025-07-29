@@ -1,2 +1,1 @@
-# Text_to_Speech_App
-App for converting text to speech
+# The app is created for converting writen to spoken text. It can be read both in male and female voice and in various levels of speed. The app also has an ability of saving files in MP3 format. The whole technology is based on pyttsx3 library, which converts text to speech.
