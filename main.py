@@ -1,8 +1,10 @@
 import tkinter as tk
-from tkinter import *
-from tkinter.ttk import Combobox
 import pyttsx3
 import os
+from tkinter import *
+from tkinter import filedialog
+from tkinter.ttk import Combobox
+from pathlib import Path
 
 
 engine=pyttsx3.init() # pyttsx3 converts text to speech - main factor of the application
@@ -11,28 +13,57 @@ def speaking():
     text_var=text_input.get(1.0, END) # 1.0 means from the beginning, to the END
     gender_var=gender.get()
     speed_var=speed.get()
-    voices=engine.getProperty('Voices')
+    voices=engine.getProperty('voices')
 
     def set_voice():
         if gender_var=='Male':
             engine.setProperty('voice', voices[0].id) # 0 - Male
-            engine.say(text=text_var)
-            engine.runAndWait()
         else:
             engine.setProperty('voice', voices[1].id) # 1 - Female
-            engine.say(text=text_var)
-            engine.runAndWait()
+            
+        engine.say(text=text_var)
+        engine.runAndWait()
+        engine.stop()
     
     if text_var:
         if speed_var=='Fast':
             engine.setProperty('rate', 250)
-            set_voice()
         elif speed_var=='Normal':
             engine.setProperty('rate', 150)
-            set_voice()
         else:
             engine.setProperty('rate', 60)
-            set_voice()
+
+        set_voice()
+
+def saving():
+    text_var=text_input.get(1.0, END)
+    gender_var=gender.get()
+    speed_var=speed.get()
+    voices=engine.getProperty('voices')
+
+    def set_voice():
+        if gender_var=='Male':
+            engine.setProperty('voice', voices[0].id) # 0 - Male
+        else:
+            engine.setProperty('voice', voices[1].id) # 1 - Female
+
+        path=Path(filedialog.asksaveasfilename(defaultextension='.mp3', filetypes=[('MP3 Files', '*.mp3')])) # asks for directory and filename
+        file_name=path.name
+        folder_path=path.parent
+        os.chdir(path=folder_path)
+        engine.save_to_file(text_var, file_name)
+        engine.runAndWait()
+        engine.stop()
+    
+    if text_var:
+        if speed_var=='Fast':
+            engine.setProperty('rate', 250)
+        elif speed_var=='Normal':
+            engine.setProperty('rate', 150)
+        else:
+            engine.setProperty('rate', 60)
+
+        set_voice()
 
 
 root=Tk()
@@ -69,11 +100,11 @@ speed.place(x=730, y=200)
 speed.set('Normal')
 
 speak_icon=PhotoImage(file='icons\\speak.png')
-button_speak=Button(root, text='SPEAK', compound=LEFT, image=speak_icon, width=140, font='arial 16 bold', command=speaking)
+button_speak=Button(root, text='SPEAK', compound=LEFT, image=speak_icon, width=130, font='arial 16 bold', command=speaking)
 button_speak.place(x=550, y=280)
 
 download_icon=PhotoImage(file='icons\\download.png')
-button_download=Button(root, text='SAVE', compound=LEFT, image=download_icon, bg='#39c790', width=140, font='arial 16 bold', command=saving)
+button_download=Button(root, text='SAVE', compound=LEFT, image=download_icon, bg='#39c790', width=130, font='arial 16 bold', command=saving)
 button_download.place(x=730, y=280)
 
 root.mainloop()
