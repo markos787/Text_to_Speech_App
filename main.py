@@ -7,9 +7,8 @@ from tkinter.ttk import Combobox
 from pathlib import Path
 
 
-engine=pyttsx3.init() # pyttsx3 converts text to speech - main factor of the application
-
 def speaking():
+    engine=pyttsx3.init() # pyttsx3 converts text to speech - main factor of the application
     text_var=text_input.get(1.0, END) # 1.0 means from the beginning, to the END
     gender_var=gender.get()
     speed_var=speed.get()
@@ -20,10 +19,6 @@ def speaking():
             engine.setProperty('voice', voices[0].id) # 0 - Male
         else:
             engine.setProperty('voice', voices[1].id) # 1 - Female
-            
-        engine.say(text=text_var)
-        engine.runAndWait()
-        engine.stop()
     
     if text_var:
         if speed_var=='Fast':
@@ -34,8 +29,12 @@ def speaking():
             engine.setProperty('rate', 60)
 
         set_voice()
+        engine.say(text=text_var)
+        engine.runAndWait()
+        engine.stop()
 
 def saving():
+    engine=pyttsx3.init() # pyttsx3 converts text to speech - main factor of the application
     text_var=text_input.get(1.0, END)
     gender_var=gender.get()
     speed_var=speed.get()
